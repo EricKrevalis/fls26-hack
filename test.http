@@ -1,6 +1,9 @@
-@baseUrl = https://fls26-mcp-106946411952.europe-west3.run.app
+@cloudUrl = https://fls26-mcp-106946411952.europe-west3.run.app
+
+@baseUrl = http://localhost:8000
+
 @mcpPath = /mcp
-@sessionId = 63bc688d09ca4861a5df1d99205d0fbe
+@sessionId =ce1b105f675f45659b950f2c8388deec
 
 ### Step 1: Initialize MCP session
 ### Run this first.

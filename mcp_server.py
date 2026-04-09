@@ -5,11 +5,16 @@ from typing import Literal, Optional
 from pydantic import BaseModel, Field
 from mcp.server.fastmcp import FastMCP
 
+MCP_MODE = os.getenv("MCP_MODE", "cloud").strip().lower()
+IS_LOCAL_MODE = MCP_MODE == "local"
+
 mcp = FastMCP(
     "local-python-tools",
-    host="0.0.0.0",
-    port=int(os.getenv("PORT", "8000")),
+    host="127.0.0.1" if IS_LOCAL_MODE else "0.0.0.0",
+    port=int(os.getenv("MCP_PORT", os.getenv("PORT", "8000"))),
     streamable_http_path="/mcp",
+    stateless_http=IS_LOCAL_MODE,
+    json_response=IS_LOCAL_MODE,
 )
 
 
