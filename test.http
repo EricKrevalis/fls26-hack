@@ -1,0 +1,67 @@
+@baseUrl =  https://fls26-mcp-106946411952.europe-west3.run.app
+@mcpPath = /mcp
+@sessionId = replace-after-initialize
+
+### 1) Initialize MCP session
+POST {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+Accept: application/json, text/event-stream
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "rest-client",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### 2) Notify server that client is initialized
+POST {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: {{sessionId}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/initialized"
+}
+
+### 3) List available tools
+POST {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: {{sessionId}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list",
+  "params": {}
+}
+
+### 4) Call find_competitor_trials
+POST {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: {{sessionId}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "find_competitor_trials",
+    "arguments": {
+      "indication": "NSCLC",
+      "phase": "Phase 2",
+      "geography": "Europe",
+      "include_upcoming": true
+    }
+  }
+}

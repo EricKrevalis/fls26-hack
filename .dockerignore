@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+langchain-env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+test.http
+research-paper

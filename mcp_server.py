@@ -1,9 +1,18 @@
 # server.py
+import os
 from typing import Literal, Optional
+
 from pydantic import BaseModel, Field
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("local-python-tools") 
+mcp = FastMCP(
+    "local-python-tools",
+    host="0.0.0.0",
+    port=int(os.getenv("PORT", "8000")),
+    streamable_http_path="/mcp",
+    stateless_http=True,
+    json_response=True,
+)
 
 
 class CompetitorTrialQuery(BaseModel):
@@ -66,4 +75,4 @@ def benchmark_trial_design(
 
 
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="streamable-http")
