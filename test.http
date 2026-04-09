@@ -1,8 +1,10 @@
-@baseUrl =  https://fls26-mcp-106946411952.europe-west3.run.app
+@baseUrl = https://fls26-mcp-106946411952.europe-west3.run.app
 @mcpPath = /mcp
-@sessionId = replace-after-initialize
+@sessionId = 63bc688d09ca4861a5df1d99205d0fbe
 
-### 1) Initialize MCP session
+### Step 1: Initialize MCP session
+### Run this first.
+### Then copy the `mcp-session-id` response header into @sessionId above.
 POST {{baseUrl}}{{mcpPath}}
 Content-Type: application/json
 Accept: application/json, text/event-stream
@@ -21,7 +23,8 @@ Accept: application/json, text/event-stream
   }
 }
 
-### 2) Notify server that client is initialized
+### Step 2: Notify server that client is initialized
+### Run this only after @sessionId has been filled with the header from Step 1.
 POST {{baseUrl}}{{mcpPath}}
 Content-Type: application/json
 Accept: application/json, text/event-stream
@@ -32,7 +35,8 @@ Mcp-Session-Id: {{sessionId}}
   "method": "notifications/initialized"
 }
 
-### 3) List available tools
+### Step 3: List available tools
+### This should return both registered tools.
 POST {{baseUrl}}{{mcpPath}}
 Content-Type: application/json
 Accept: application/json, text/event-stream
@@ -45,7 +49,7 @@ Mcp-Session-Id: {{sessionId}}
   "params": {}
 }
 
-### 4) Call find_competitor_trials
+### Step 4: Call find_competitor_trials
 POST {{baseUrl}}{{mcpPath}}
 Content-Type: application/json
 Accept: application/json, text/event-stream
@@ -62,6 +66,27 @@ Mcp-Session-Id: {{sessionId}}
       "phase": "Phase 2",
       "geography": "Europe",
       "include_upcoming": true
+    }
+  }
+}
+
+### Step 5: Call benchmark_trial_design
+POST {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: {{sessionId}}
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "benchmark_trial_design",
+    "arguments": {
+      "sample_size": 180,
+      "comparator_type": "standard_of_care",
+      "age_min": 18,
+      "age_max": 75
     }
   }
 }
